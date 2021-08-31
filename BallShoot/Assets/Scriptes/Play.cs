@@ -16,6 +16,9 @@ public class Play : MonoBehaviour
     private Ball ballPrefabs;
 
     [SerializeField]
+    private BarPowerShoot barPowerShoot;
+
+    [SerializeField]
     private Transform trfParen_ListBall;
     [SerializeField]
     private GameObject dots;
@@ -65,9 +68,14 @@ public class Play : MonoBehaviour
         }
     }
 
-    private void Shooter()
+    private void SetBarPowerShoot( float power)
     {
 
+    }
+
+    private void Shooter(Vector2 vtForce)
+    {
+        ballShoot.Shooter(vtForce);
     }
 
 }

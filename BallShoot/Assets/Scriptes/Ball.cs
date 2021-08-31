@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody2D theRigibody2D;
+    private void Awake()
     {
-        
+        theRigibody2D = this.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Shooter(Vector2 force)
     {
-        
+        theRigibody2D.AddForce(force);
     }
 }
