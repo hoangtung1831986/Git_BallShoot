@@ -15,8 +15,12 @@ public class Play : MonoBehaviour
     [SerializeField]
     private Ball ballPrefabs;
 
+    [Header("BarPowerShoot")]
     [SerializeField]
     private BarPowerShoot barPowerShoot;
+    private float valueBarPowerShoot;
+    private int boodBarPower;
+
 
     [SerializeField]
     private Transform trfParen_ListBall;
@@ -59,18 +63,30 @@ public class Play : MonoBehaviour
                 Vector2 direction = pointMouse - (Vector2)transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 dots.transform.rotation = Quaternion.Euler(new Vector3(0,0,angle));
+
+                valueBarPowerShoot += (2f* boodBarPower) * Time.deltaTime;
+                if(valueBarPowerShoot>=100)
+                {
+                    valueBarPowerShoot -= 2f * Time.deltaTime;
+                }
+                if (valueBarPowerShoot < 0)
+                {
+
+                }
+                SetBarPowerShoot();
             }
             if (Input.GetMouseButtonUp(0))
             {
                 isMouseDown = false;
                 dots.SetActive(false);
+                valueBarPowerShoot = 0;
             }
         }
     }
 
-    private void SetBarPowerShoot( float power)
+    private void SetBarPowerShoot()
     {
-
+        barPowerShoot.SetValueSlide(valueBarPowerShoot);
     }
 
     private void Shooter(Vector2 vtForce)
