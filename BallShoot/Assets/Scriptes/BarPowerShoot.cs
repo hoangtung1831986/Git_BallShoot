@@ -5,7 +5,12 @@ using UnityEngine.UI;
 
 public class BarPowerShoot : MonoBehaviour
 {
+    
     private Slider slider;
+    [SerializeField]
+    private Gradient gradient;
+    [SerializeField]
+    private Image fill;
     private void Awake()
     {
         slider = this.GetComponent<Slider>();
@@ -14,5 +19,6 @@ public class BarPowerShoot : MonoBehaviour
     public void SetValueSlide(float value)
     {
         slider.value = value;
+        fill.color= gradient.Evaluate(value);
     }
 }

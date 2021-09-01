@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Play : MonoBehaviour
 {
-    [Header ("param")]
+    [Header("param")]
     private bool isMouseDown = false;
     [SerializeField]
     private float area;
@@ -18,8 +18,8 @@ public class Play : MonoBehaviour
     [Header("BarPowerShoot")]
     [SerializeField]
     private BarPowerShoot barPowerShoot;
-    private float valueBarPowerShoot;
-    private int boodBarPower;
+    private float valueBarPowerShoot = 0;
+    private int boodBarPower = 1;
 
 
     [SerializeField]
@@ -31,7 +31,7 @@ public class Play : MonoBehaviour
     private void Start()
     {
         listBallReady = new List<Ball>();
-        for(int i=0; i<numberBall; i++)
+        for (int i = 0; i < numberBall; i++)
         {
             Ball ball = Instantiate(ballPrefabs, trfParen_ListBall);
             listBallReady.Add(ball);
@@ -39,9 +39,9 @@ public class Play : MonoBehaviour
         ballShoot = listBallReady[numberBall - 1];
         ballShoot.transform.position = transform.position;
         ballShoot.transform.SetParent(transform);
-        listBallReady.RemoveAt(numberBall-1);
+        listBallReady.RemoveAt(numberBall - 1);
         numberBall -= 1;
-       
+
     }
 
     private void Update()
@@ -62,24 +62,28 @@ public class Play : MonoBehaviour
                 Vector2 pointMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 direction = pointMouse - (Vector2)transform.position;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                dots.transform.rotation = Quaternion.Euler(new Vector3(0,0,angle));
+                dots.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-                valueBarPowerShoot += (2f* boodBarPower) * Time.deltaTime;
-                if(valueBarPowerShoot>=100)
-                {
-                    valueBarPowerShoot -= 2f * Time.deltaTime;
-                }
-                if (valueBarPowerShoot < 0)
-                {
 
+                if (valueBarPowerShoot >= 1)
+                {
+                    boodBarPower = -1;
                 }
+                if (valueBarPowerShoot <= 0)
+                {
+                    boodBarPower = 1;
+                }
+
+                valueBarPowerShoot +=  boodBarPower * Time.deltaTime * 0.5f;
                 SetBarPowerShoot();
             }
             if (Input.GetMouseButtonUp(0))
             {
+                Vector2 pointMouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 direction = (pointMouse - (Vector2)transform.position).normalized;
                 isMouseDown = false;
                 dots.SetActive(false);
-                valueBarPowerShoot = 0;
+                BallShooter(direction, valueBarPowerShoot);
             }
         }
     }
@@ -89,9 +93,27 @@ public class Play : MonoBehaviour
         barPowerShoot.SetValueSlide(valueBarPowerShoot);
     }
 
-    private void Shooter(Vector2 vtForce)
+    private void BallShooter(Vector2 direction, float valueBar)
     {
-        ballShoot.Shooter(vtForce);
+        float powerBar = 0;
+        float maxPower = 1000f;
+        if(valueBar>=0 && valueBar <= 0.8f)
+        {
+            powerBar = (valueBar* maxPower) /0.8f;
+        }
+        if (valueBar > 0.8f)
+        {
+            powerBar = ((0.8f - (valueBar - 0.8f)) * maxPower)/0.8f ;
+        }
+        ballShoot.Shooter(powerBar * direction);
+    }
+    private void Reset()
+    {
+        isMouseDown = false;
+        dots.SetActive(false);
+        valueBarPowerShoot = 0;
+        boodBarPower = 1;
+        SetBarPowerShoot();
     }
 
 }
