@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +10,10 @@ public class Play : MonoBehaviour
     private float area;
     [SerializeField]
     private int numberBall;
+    private bool isShoot = false;
+
+    // Biến xác định kết thúc một lần bắn ( khi bóng bắn xong mà bay đi xa, hoặc lực bắn yếu, hoặc chạm vào các mục tiêu đã xong)
+    private bool isFinish=false;
 
     private Ball ballShoot;
     [SerializeField]
@@ -86,6 +90,11 @@ public class Play : MonoBehaviour
                 BallShooter(direction, valueBarPowerShoot);
             }
         }
+
+        if (isShoot == true)
+        {
+            Debug.Log(ballShoot.GetVelocity().magnitude);
+        }
     }
 
     private void SetBarPowerShoot()
@@ -95,6 +104,7 @@ public class Play : MonoBehaviour
 
     private void BallShooter(Vector2 direction, float valueBar)
     {
+        isShoot = true;
         float powerBar = 0;
         float maxPower = 1000f;
         if(valueBar>=0 && valueBar <= 0.8f)

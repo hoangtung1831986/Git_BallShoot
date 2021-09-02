@@ -14,4 +14,9 @@ public class Ball : MonoBehaviour
     {
         theRigibody2D.AddForce(force);
     }
+
+    public Vector2 GetVelocity()
+    {
+        return theRigibody2D.velocity;
+    }
 }
