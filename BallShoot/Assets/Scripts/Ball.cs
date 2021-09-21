@@ -19,4 +19,20 @@ public class Ball : MonoBehaviour
     {
         return theRigibody2D.velocity;
     }
+
+    public void MovingTarget(Vector2 vtTarget)
+    {
+        StartCoroutine(I_MovingTarget(vtTarget));
+    }
+
+    public IEnumerator I_MovingTarget(Vector2 vtTarget)
+    {
+        Vector2 point = transform.position;
+        while (Vector2.Distance(vtTarget, transform.position) > 0.1f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, vtTarget, 5 * Time.deltaTime);
+            yield return null;
+        }
+        transform.position = vtTarget;
+    }
 }
