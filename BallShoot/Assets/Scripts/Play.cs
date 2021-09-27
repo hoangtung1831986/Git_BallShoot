@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Play : MonoBehaviour
 {
+    private static Play instance;
+    public static Play Instance
+    {
+        set { }
+        get { return instance;  }
+    }
+
     [Header("param")]
     private bool isMouseDown = false;
     [SerializeField]
@@ -29,6 +36,11 @@ public class Play : MonoBehaviour
     private GameObject dots;
     private List<Ball> listBallReady;
 
+
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         listBallReady = new List<Ball>();
@@ -174,6 +186,11 @@ public class Play : MonoBehaviour
         valueBarPowerShoot = 0;
         boodBarPower = 1;
         SetBarPowerShoot();
+    }
+
+    public void Example()
+    {
+        Debug.Log(numberBall);
     }
 
 }

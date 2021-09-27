@@ -10,6 +10,20 @@ public class Ball : MonoBehaviour
         theRigibody2D = this.GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        Play.instance.Example();
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        ICollisionBall iCollBall = other.gameObject.GetComponent<ICollisionBall>();
+        if(iCollBall != null)
+        {
+            iCollBall.CollisionBall();
+        }
+    }
+
+
     public void Shooter(Vector2 force)
     {
         theRigibody2D.AddForce(force);
